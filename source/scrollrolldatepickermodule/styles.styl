@@ -46,6 +46,8 @@ ScrollRoll Datepicker
     .scroll-roll-input
         position: relative
         z-index 1
+    input[type="date"].scroll-roll-input::placeholder
+        display: none;
 
     .scroll-roll-datepicker-container.shown
         opacity 1
@@ -72,7 +74,7 @@ ScrollRoll Datepicker
         box-sizing: border-box
         border solid 2px var(--scrollroll-frame-color)
         height var(--scrollroll-frame-height)
-        background-color white
+        // background-color white
 
     .scrollrolldatepicker
         position absolute
