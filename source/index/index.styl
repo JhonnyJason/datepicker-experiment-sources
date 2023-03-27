@@ -12,3 +12,40 @@ Global Styles
 Including other components
 ==============================================================================*/
 @import '../allmodules/allstyles.styl'
+
+
+/*==============================================================================
+Credentialsframe
+==============================================================================*/
+#credentialsframe-container
+    position absolute
+    top 50%
+    left 50%
+    transform translate(-50%, -50%)
+    width 90%
+    max-height 90% 
+    max-width: 320px
+
+    label
+        display block
+        font-size: 12pt
+        color alpha(cd-darkblue, 0.7)
+    label:nth-child(3)
+        margin-top 10px
+
+    input
+        display: block
+        box-sizing: border-box
+        text-overflow: ellipsis;
+        padding: 7px
+        box-sizing: border-box
+        color cd-darkblue
+        background-color white
+        border solid 1px cd-darkblue
+        width 100%
+        text-align: center
+
+    input:focus
+        padding: 7px
+        background-color white
+
