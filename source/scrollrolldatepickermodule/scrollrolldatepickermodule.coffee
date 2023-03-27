@@ -75,11 +75,12 @@ inputElementClicked = (evnt) ->
 openScrollRollDatepicker = ->
     log "openScrollRollDatepicker"
     datepickerContainer.classList.add("shown")
+    requestAnimationFrame(heartbeat)
     return
 
 
-
 ############################################################
+#region adding scrollrollElements
 addDayElements = (picker) ->
     log "addDayElements"
     html = "<div class='scrollroll-element-space'></div>"    
@@ -111,4 +112,30 @@ addYearElements = (picker) ->
         html += "<div class='scrollroll-element'>#{year}</div>"
     html += "<div class='scrollroll-element-space'></div>"
     picker.innerHTML = html
+    return
+
+#endregion
+
+############################################################
+heartbeat = ->
+    log "heartbeat"
+    checkDayScroll()
+    checkMonthScroll()
+    checkYearScroll()
+    setTimeout(heartbeat, 1000)
+    return
+
+checkDayScroll = ->
+    log "checkDayScroll"
+    log dayPicker.scrollTop
+    return
+
+checkMonthScroll = ->
+    log "checkMonthScroll"
+    log monthPicker.scrollTop
+    return
+
+checkYearScroll = ->
+    log "checkYearScroll"
+    log yearPicker.scrollTop
     return
