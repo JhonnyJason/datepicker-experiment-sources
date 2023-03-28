@@ -11,8 +11,8 @@ otherId = "other-birthday-input"
 ############################################################
 appStartup = ->
     ## which modules shall be kickstarted?
-    # Modules.scrollrolldatepickermodule.setUp(inputId)
-    Modules.scrollrolldatepickermodule.setUp(otherId)
+    Modules.scrollrolldatepickermodule.setUp(inputId)
+    # Modules.scrollrolldatepickermodule.setUp(otherId)
     return
 
 ############################################################

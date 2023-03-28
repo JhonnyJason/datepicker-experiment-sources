@@ -78,8 +78,6 @@ currentYear = new Date().getFullYear()
 oldestYear = currentYear - 150
 allYears = [oldestYear..currentYear]
 
-leapYears = allYears.filter((year) -> return !(year % 4))
-log leapYears
 daysForMonth = [
     31, # jan
     28, # feb
@@ -140,7 +138,7 @@ export setUp = (id) ->
     calendarIcon.innerHTML = '<svg viewBox="0 0 24 24"><path fill="currentColor" d="M19,19H5V8H19M16,1V3H8V1H6V3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3H18V1" /></svg>'
 
     ## further setup
-    inputHeight = inputElement.getBoundingClientRect().height
+    inputHeight = Math.ceil(inputElement.getBoundingClientRect().height)
     if inputHeight % 2 then inputHeight += 1
     log inputHeight
     outerContainer.style.setProperty("--scrollroll-input-height", "#{inputHeight}px")
@@ -209,6 +207,9 @@ inputElementClicked = (evnt) ->
 
 closeScrollRollDatepicker = ->
     log "closeScrollRollDatepicker"
+    if dayPos > (maxDays - 1) # invalid day
+        dayElements[dayPos].style.color = "red"
+        return
     datepickerContainer.classList.remove("shown")
     nexHeartbeat = () -> return
     return
@@ -223,6 +224,9 @@ openScrollRollDatepicker = ->
 
 ############################################################
 #region adding scrollrollElements
+dayElements = []
+
+############################################################
 addDayElements = (picker) ->
     log "addDayElements"
     html = "<div class='scrollroll-element-space'></div>"    
@@ -230,6 +234,8 @@ addDayElements = (picker) ->
         html += "<div class='scrollroll-element'>#{day}</div>"
     html += "<div class='scrollroll-element-space'></div>"
     picker.innerHTML = html
+
+    dayElements = picker.getElementsByClassName("scrollroll-element")
     return
 
 addMonthElements = (picker) ->
@@ -265,23 +271,27 @@ heartbeat = ->
 ############################################################
 previousDayScroll = 0
 dayPos = 0
+maxDays = 31
 
 ############################################################
 checkDayScroll = ->
     # log "checkDayScroll"
     currentScroll = dayPicker.scrollTop 
-    
-    # log "scroll:  #{currentScroll}"
-    # log "pos: #{dayPos}"
-
     posScroll = scrollFromPos(dayPos)
+    
+    log "scroll:  #{currentScroll}"
+    log "pos: #{dayPos}"
+    log "posSCroll: #{posScroll}"
+
     ## when scroll did not change and we we are not on our valid scroll position
     if previousDayScroll == currentScroll and currentScroll != posScroll
         # then we snap to the next valid scroll position
         dayPos = posFromScroll(currentScroll)
-        if dayPos > 30 then dayPos = 30 # 30 is last position
+        if dayPos > (maxDays - 1) then dayPos = maxDays - 1
         currentScroll = scrollFromPos(dayPos)
         dayPicker.scrollTo(0, currentScroll)
+        for pos in [28..30] 
+            dayElements[pos].style.removeProperty("color")
 
     previousDayScroll = currentScroll
     return
@@ -296,7 +306,7 @@ checkMonthScroll = ->
     currentScroll = monthPicker.scrollTop 
     
     # log "scroll:  #{currentScroll}"
-    # log "pos: #{monthPos}"
+    # log "pos: #{montallDayElhPos}"
 
     posScroll = scrollFromPos(monthPos)
     ## when scroll did not change and we we are not on our valid scroll position
@@ -306,8 +316,22 @@ checkMonthScroll = ->
         if monthPos > 11 then monthPos = 11 # 11 is last position
         currentScroll = scrollFromPos(monthPos)
         monthPicker.scrollTo(0, currentScroll)
+        adjustMaxDays()
 
     previousMonthScroll = currentScroll
+    return
+
+############################################################
+adjustMaxDays = ->
+    # log "adjustMaxDays"
+    maxDays = daysForMonth[monthPos]
+
+    if !(allYears[yearPos] % 4) and (maxDays == 28) then maxDays++ # leap year
+    
+    for pos in [28..30]
+        dayElements[pos].style.removeProperty("color")
+        if maxDays <= pos then dayElements[pos].style.opacity = "0.5"
+        else dayElements[pos].style.removeProperty("opacity")
     return
 
 ############################################################
