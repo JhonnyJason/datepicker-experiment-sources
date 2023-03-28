@@ -115,8 +115,8 @@ export initialize = ->
     log "initialize"
     ## this could by called as initialize(inputId)
     inputElement = document.getElementById(inputId)
-    # inputElement.setAttribute("type", "text")
-    # inputElement.setAttribute("placeholder", "dd.mm.yyyy")
+    inputElement.setAttribute("type", "text")
+    inputElement.setAttribute("placeholder", "dd.mm.yyyy")
     
     ## creating the container Elements
     outerContainer = document.createElement("div")
@@ -188,9 +188,9 @@ acceptButtonClicked = (evnt) ->
     year = allYears[yearPos]
 
     date = "#{year}-#{month}-#{day}"
-    # inputValue = "#{day}.#{month}.#{year}"
-    # inputElement.value = inputValue
-    inputElement.value = date
+    inputValue = "#{day}.#{month}.#{year}"
+    inputElement.value = inputValue
+    # inputElement.value = date
     closeScrollRollDatepicker()
     return
 
@@ -327,7 +327,6 @@ checkYearScroll = ->
 
     previousYearScroll = currentScroll
     return
-
 
 ############################################################
 scrollFromPos = (pos) -> (inputHeight / 2) + (pos * inputHeight)
