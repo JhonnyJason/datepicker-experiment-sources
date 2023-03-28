@@ -115,8 +115,8 @@ export initialize = ->
     log "initialize"
     ## this could by called as initialize(inputId)
     inputElement = document.getElementById(inputId)
-    inputElement.setAttribute("type", "text")
-    inputElement.setAttribute("placeholder", "dd.mm.yyyy")
+    # inputElement.setAttribute("type", "text")
+    # inputElement.setAttribute("placeholder", "dd.mm.yyyy")
     
     ## creating the container Elements
     outerContainer = document.createElement("div")
@@ -157,11 +157,30 @@ export initialize = ->
     addMonthElements(monthPicker)
     addYearElements(yearPicker)
 
+    yearPos = allYears.length - 43
+    previousYearScroll = scrollFromPos(yearPos)
+    yearPicker.scrollTo(0, previousYearScroll)
+    
+    monthPos = Math.ceil(allMonthStrings.length / 2) - 1
+    previousMonthScroll = scrollFromPos(monthPos)
+    monthPicker.scrollTo(0, previousMonthScroll)
+
+    daysPos = Math.floor(allDayStrings.length / 2) - 1
+    previousDayScroll = scrollFromPos(daysPos)
+    dayPicker.scrollTo(0, previousDayScroll)
+
     inputElement.addEventListener("click", inputElementClicked)
+    inputElement.addEventListener("focus", inputElementFocused)
     acceptButton.addEventListener("click", acceptButtonClicked)
     return
 
 ############################################################
+inputElementFocused = (evnt) ->
+    log "inputElementFocused"
+    evnt.preventDefault()
+    this.blur()
+    return false
+
 acceptButtonClicked = (evnt) ->
     log "acceptButtonClicked"
     day = allDayStrings[dayPos]
@@ -169,6 +188,8 @@ acceptButtonClicked = (evnt) ->
     year = allYears[yearPos]
 
     date = "#{year}-#{month}-#{day}"
+    # inputValue = "#{day}.#{month}.#{year}"
+    # inputElement.value = inputValue
     inputElement.value = date
     closeScrollRollDatepicker()
     return
@@ -189,6 +210,7 @@ closeScrollRollDatepicker = ->
 openScrollRollDatepicker = ->
     log "openScrollRollDatepicker"
     datepickerContainer.classList.add("shown")
+
     nexHeartbeat = heartbeat
     requestAnimationFrame(nexHeartbeat)
     return
