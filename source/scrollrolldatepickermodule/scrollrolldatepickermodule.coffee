@@ -26,7 +26,7 @@ yearPicker = null
 
 ############################################################
 #region Day, Month and Year Values
-allDays = [
+allDayStrings = [
     "01"
     "02"
     "03"
@@ -61,7 +61,7 @@ allDays = [
 ]
 
 ############################################################
-allMonths = [
+allMonthStrings = [
     "01"
     "02"
     "03"
@@ -81,6 +81,23 @@ currentYear = new Date().getFullYear()
 oldestYear = currentYear - 150
 allYears = [oldestYear..currentYear]
 
+leapYears = allYears.filter((year) -> return !(year % 4))
+log leapYears
+daysForMonth = [
+    31, # jan
+    28, # feb
+    31, # mar
+    30, # apr
+    31, # may
+    30, # jun
+    31, # jul
+    31, # aug
+    30, # sep
+    31, # oct
+    30, # nov
+    31 # dec
+]
+
 #endregion
 
 ############################################################
@@ -98,7 +115,9 @@ export initialize = ->
     log "initialize"
     ## this could by called as initialize(inputId)
     inputElement = document.getElementById(inputId)
-
+    inputElement.setAttribute("type", "text")
+    inputElement.setAttribute("placeholder", "dd.mm.yyyy")
+    
     ## creating the container Elements
     outerContainer = document.createElement("div")
     datepickerContainer = document.createElement("div")
@@ -145,8 +164,8 @@ export initialize = ->
 ############################################################
 acceptButtonClicked = (evnt) ->
     log "acceptButtonClicked"
-    day = allDays[dayPos]
-    month = allMonths[monthPos]
+    day = allDayStrings[dayPos]
+    month = allMonthStrings[monthPos]
     year = allYears[yearPos]
 
     date = "#{year}-#{month}-#{day}"
@@ -179,7 +198,7 @@ openScrollRollDatepicker = ->
 addDayElements = (picker) ->
     log "addDayElements"
     html = "<div class='scrollroll-element-space'></div>"    
-    for day in allDays
+    for day in allDayStrings
         html += "<div class='scrollroll-element'>#{day}</div>"
     html += "<div class='scrollroll-element-space'></div>"
     picker.innerHTML = html
@@ -188,7 +207,7 @@ addDayElements = (picker) ->
 addMonthElements = (picker) ->
     log "addMonthElements" 
     html = "<div class='scrollroll-element-space'></div>"
-    for month in allMonths
+    for month in allMonthStrings
         html += "<div class='scrollroll-element'>#{month}</div>"
     html += "<div class='scrollroll-element-space'></div>"
     picker.innerHTML = html
