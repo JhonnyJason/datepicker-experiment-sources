@@ -264,6 +264,8 @@ heartbeat = ->
     checkDayScroll()
     checkMonthScroll()
     checkYearScroll()
+    adjustMaxDays()
+
     # setTimeout(heartbeat, 1000)
     requestAnimationFrame(nexHeartbeat)
     return
@@ -316,7 +318,6 @@ checkMonthScroll = ->
         if monthPos > 11 then monthPos = 11 # 11 is last position
         currentScroll = scrollFromPos(monthPos)
         monthPicker.scrollTo(0, currentScroll)
-        adjustMaxDays()
 
     previousMonthScroll = currentScroll
     return
