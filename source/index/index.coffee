@@ -5,9 +5,14 @@ domconnect.initialize()
 global.allModules = Modules
 
 ############################################################
+inputId = "login-birthday-input"
+otherId = "other-birthday-input"
+
+############################################################
 appStartup = ->
     ## which modules shall be kickstarted?
-    # Modules.appcoremodule.startUp()
+    # Modules.scrollrolldatepickermodule.setUp(inputId)
+    Modules.scrollrolldatepickermodule.setUp(otherId)
     return
 
 ############################################################

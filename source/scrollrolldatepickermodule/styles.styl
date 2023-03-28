@@ -6,23 +6,23 @@
 /*==============================================================================
  Input decoration adjustment
 ==============================================================================*/
-input[type="date"].scroll-roll-input
+input[type="date"].scrollroll-input
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
     -ms-appearance: none;
 
 
-input[type="date"].scroll-roll-input::-webkit-calendar-picker-indicator
+input[type="date"].scrollroll-input::-webkit-calendar-picker-indicator
     display none
 
-input[type="date"].scroll-roll-input::-moz-calendar-picker-icon
+input[type="date"].scrollroll-input::-moz-calendar-picker-icon
     display: none
 
-input[type="date"].scroll-roll-input::-ms-clear
+input[type="date"].scrollroll-input::-ms-clear
     display: none
 
-input[type="date"].scroll-roll-input::-ms-reveal
+input[type="date"].scrollroll-input::-ms-reveal
     display: none
 
 
@@ -31,29 +31,42 @@ input[type="date"].scroll-roll-input::-ms-reveal
  Default Variable Definitions
 ==============================================================================*/
 :root
-    --scrollroll-frame-height: 40px
+    --scrollroll-input-height: 40px
     --scrollroll-frame-color: cd-darkblue
 
 /*==============================================================================
 ScrollRoll Datepicker
 ==============================================================================*/
-.scroll-roll-container
+.scrollroll-container
     position relative
     display block
     overflow: visible
 
-    .scroll-roll-input
+    .scrollroll-input
         position: relative
         z-index 1
-    input[type="date"].scroll-roll-input::placeholder
+    input[type="date"].scrollroll-input::placeholder
         display: none;
 
-    .scroll-roll-datepicker-container.shown
+    .scrollroll-calendar
+        position absolute
+        top 50%
+        right 0
+        transform translateY(-50%)
+        height var(--scrollroll-input-height)
+        width: var(--scrollroll-input-height)
+        z-index 1
+        pointer-events none
+        svg
+            padding: 5px
+            box-sizing: border-box
+
+    .scrollroll-datepicker-container.shown
         opacity 1
         transform translate(-50%, -50%) scale(1, 1)
         z-index 2
 
-    .scroll-roll-datepicker-container
+    .scrollroll-datepicker-container
         position absolute
         top 50%
         left 50%
@@ -72,7 +85,7 @@ ScrollRoll Datepicker
         width 100%
         box-sizing: border-box
         border solid 2px var(--scrollroll-frame-color)
-        height var(--scrollroll-frame-height)
+        height var(--scrollroll-input-height)
         background-color white
 
     .scrollroll-accept-button
@@ -80,14 +93,14 @@ ScrollRoll Datepicker
         top 50%
         right 0
         transform: translateY(-50%)
-        height: var(--scrollroll-frame-height)
-        width: var(--scrollroll-frame-height)
+        height: var(--scrollroll-input-height)
+        width: var(--scrollroll-input-height)
         background-color var(--scrollroll-frame-color)
         color white
         cursor pointer
         z-index 3
         svg
-            padding 3px
+            padding 5px
             box-sizing: border-box
 
     .scrollrolldatepicker
@@ -111,8 +124,8 @@ ScrollRoll Datepicker
     .scrollroll-element
         padding 2px 5px 0px 5px
         box-sizing: border-box
-        height var(--scrollroll-frame-height)
-        line-height var(--scrollroll-frame-height)
+        height var(--scrollroll-input-height)
+        line-height var(--scrollroll-input-height)
         
     .scrollroll-year-picker
     .scrollroll-month-picker

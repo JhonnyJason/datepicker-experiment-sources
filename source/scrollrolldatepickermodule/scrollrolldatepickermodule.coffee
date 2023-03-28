@@ -8,9 +8,6 @@ import { createLogFunctions } from "thingy-debug"
 template = ""
 
 ############################################################
-inputId = "login-birthday-input"
-
-############################################################
 #region DOM Cache
 inputElement = null
 outerContainer = null
@@ -101,8 +98,8 @@ daysForMonth = [
 #endregion
 
 ############################################################
+isInputElement = false
 inputHeight = 0
-width = 0
 
 ############################################################
 visibleElements = 0
@@ -111,36 +108,42 @@ visibleElements = 0
 nexHeartbeat = () -> return
 
 ############################################################
-export initialize = ->
-    log "initialize"
-    ## this could by called as initialize(inputId)
-    inputElement = document.getElementById(inputId)
-    inputElement.setAttribute("type", "text")
-    inputElement.setAttribute("placeholder", "dd.mm.yyyy")
+export setUp = (id) ->
+    inputElement = document.getElementById(id)
+    isInputElement = (inputElement.tagName == "INPUT" or inputElement.tagName == "input")
+
+    if isInputElement and inputElement.getAttribute("type") != "text"
+        inputElement.setAttribute("type", "text")
+        inputElement.setAttribute("placeholder", "dd.mm.yyyy")
+        inputElement.setAttribute("readonly", "readonly")
     
     ## creating the container Elements
     outerContainer = document.createElement("div")
     datepickerContainer = document.createElement("div")
+    calendarIcon = document.createElement("div")
 
     ## adding the expected classes
-    inputElement.classList.add("scroll-roll-input")
-    outerContainer.classList.add("scroll-roll-container")
-    datepickerContainer.classList.add("scroll-roll-datepicker-container")
+    inputElement.classList.add("scrollroll-input")
+    outerContainer.classList.add("scrollroll-container")
+    datepickerContainer.classList.add("scrollroll-datepicker-container")
+    calendarIcon.classList.add("scrollroll-calendar")
 
     ## arrange the DOM 
     inputElement.replaceWith(outerContainer)
     outerContainer.append(inputElement)
     outerContainer.append(datepickerContainer)
+    outerContainer.append(calendarIcon)
 
     ## inject the HTML
     template = scrollrolldatepickerHiddenTemplate.innerHTML
     datepickerContainer.innerHTML = template
+    calendarIcon.innerHTML = '<svg viewBox="0 0 24 24"><path fill="currentColor" d="M19,19H5V8H19M16,1V3H8V1H6V3H5C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3H18V1" /></svg>'
 
     ## further setup
     inputHeight = inputElement.getBoundingClientRect().height
     if inputHeight % 2 then inputHeight += 1
     log inputHeight
-    datepickerContainer.style.setProperty("--scrollroll-frame-height", "#{inputHeight}px")
+    outerContainer.style.setProperty("--scrollroll-input-height", "#{inputHeight}px")
 
     outerHeight = datepickerContainer.getBoundingClientRect().height
     log "outerHeight #{outerHeight}"    
@@ -189,7 +192,10 @@ acceptButtonClicked = (evnt) ->
 
     date = "#{year}-#{month}-#{day}"
     inputValue = "#{day}.#{month}.#{year}"
-    inputElement.value = inputValue
+    if isInputElement
+        inputElement.value = inputValue
+    else
+        inputElement.innerText = inputValue
     # inputElement.value = date
     closeScrollRollDatepicker()
     return
