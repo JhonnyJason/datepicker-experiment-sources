@@ -7,19 +7,13 @@ import { createLogFunctions } from "thingy-debug"
 ############################################################
 allTasks = new Set()
 allTasksArray = []
-
-
-############################################################
-export initialize = ->
-    log "initialize"
-    requestAnimationFrame(heartbeat)
-    return
+nexHeartbeat = () -> return
 
 ############################################################
 heartbeat = ->
-    log "heartbeat"
+    # log "heartbeat"
     task() for task in allTasksArray
-    requestAnimationFrame(heartbeat)
+    requestAnimationFrame(nexHeartbeat)
     return
 
 ############################################################
@@ -28,6 +22,7 @@ export addAnimationTask = (task) ->
     allTasks.add(task)
     allTasksArray = [...allTasks]
     log "number of Tasks now: #{allTasksArray.length}"
+    nexHeartbeat = heartbeat
     return
 
 ############################################################
@@ -36,4 +31,5 @@ export removeAnimationTask = (task) ->
     allTasks.delete(task)
     allTasksArray = [...allTasks]
     log "number of Tasks now: #{allTasksArray.length}"
+    if allTasksArray.length == 0 then nexHeartbeat = () -> return
     return
