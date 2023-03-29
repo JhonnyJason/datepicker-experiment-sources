@@ -4,6 +4,7 @@ domconnect.initialize()
 
 global.allModules = Modules
 
+import { ScrollRollDatepicker } from "./scrollrolldatepickermodule.js"
 ############################################################
 inputId = "login-birthday-input"
 otherId = "other-birthday-input"
@@ -11,8 +12,13 @@ otherId = "other-birthday-input"
 ############################################################
 appStartup = ->
     ## which modules shall be kickstarted?
-    Modules.scrollrolldatepickermodule.setUp(inputId)
-    # Modules.scrollrolldatepickermodule.setUp(otherId)
+    element = inputId
+    firstDatePicker = new ScrollRollDatepicker({element})
+    firstDatePicker.initialize()
+    
+    element = otherId
+    secondDatePicker = new ScrollRollDatepicker({element})
+    secondDatePicker.initialize()
     return
 
 ############################################################
